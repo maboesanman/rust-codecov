@@ -15,18 +15,21 @@ inputs:
 runs:
   using: 'composite'
   steps:
-  - name: Install nightly toolchain
-    uses: actions-rs/toolchain@v1
-    with:
-      profile: minimal
-      toolchain: nightly
-      override: true
-      components: llvm-tools-preview
+  - name: install nightly
+    run: |
+      rustup set profile minimal
+      rustup toolchain install nightly
+
+  - name: Install llvm tools
+    run: rustup install llvm-tools-preview
+    shell: bash
 
   - name: Install cargo utilities
-    run: cargo install cargo-binutils cargo-llvm-codecov-converter
+    run: cargo +nightly install cargo-binutils cargo-llvm-codecov-converter
+    shell: bash
 
-  - run: |
+  - name: build test and cover
+    run: |
       export OUTPUT_PATH=${{ inputs.output-path }}
       export IGNORE_PATTERN=${{ inputs.ignore-pattern }}
       ${{ github.action_path }}/build-test-cover.sh
