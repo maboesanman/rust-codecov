@@ -1,0 +1,30 @@
+name: 'Rust Codecov'
+description: 'Instrument, test, collect coverage, and format it for codecov'
+inputs:
+  output-path:
+    description: 'the destination file path'
+    required: false
+    default: 'codecov.json'
+  ignore-pattern:
+    description: 'pattern to exclude from coverage'
+    retuired: false
+    default: '(.*\.cargo/registry/.*)|(.*\.rustup/.*)|($IGNORE_PATTERN)|(.*test.*)'
+runs:
+  using: 'composite'
+  steps:
+  - name: Install nightly toolchain
+    uses: actions-rs/toolchain@v1
+    with:
+      profile: minimal
+      toolchain: nightly
+      override: true
+      components: llvm-tools-preview
+
+  - name: Install cargo utilities
+    run: cargo install cargo-binutils cargo-llvm-codecov-converter
+
+  - run: |
+      export OUTPUT_PATH=${{ inputs.output-path }}
+      export IGNORE_PATTERN=${{ inputs.ignore-pattern }}
+      ${{ github.action_path }}/build-test-cover.sh
+    shell: bash
