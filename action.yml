@@ -1,5 +1,7 @@
 name: 'Rust Codecov'
 description: 'Instrument, test, collect coverage, and format it for codecov'
+icon: 'file-text'
+color: 'yellow'
 inputs:
   output-path:
     description: 'the destination file path'
