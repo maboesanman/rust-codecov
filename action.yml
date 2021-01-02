@@ -19,6 +19,7 @@ runs:
     run: |
       rustup set profile minimal
       rustup toolchain install nightly
+    shell: bash
 
   - name: Install llvm tools
     run: rustup install llvm-tools-preview
