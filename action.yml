@@ -11,7 +11,7 @@ inputs:
   ignore-pattern:
     description: 'pattern to exclude from coverage'
     retuired: false
-    default: '(.*\.cargo/registry/.*)|(.*\.rustup/.*)|($IGNORE_PATTERN)|(.*test.*)'
+    default: '(.*\.cargo/registry/.*)|(.*\.rustup/.*)|(.*test.*)'
 runs:
   using: 'composite'
   steps:
@@ -31,7 +31,7 @@ runs:
 
   - name: build test and cover
     run: |
-      export OUTPUT_PATH=${{ inputs.output-path }}
-      export IGNORE_PATTERN=${{ inputs.ignore-pattern }}
+      export OUTPUT_PATH="${{ inputs.output-path }}"
+      export IGNORE_PATTERN="${{ inputs.ignore-pattern }}"
       ${{ github.action_path }}/build-test-cover.sh
     shell: bash
